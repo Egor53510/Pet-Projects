@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton,  InlineKeyboardButton, InlineKeyboardMarkup
 from random import randrange
 
 import config
@@ -9,6 +9,14 @@ dp = Dispatcher(bot)
 
 kb = ReplyKeyboardMarkup(resize_keyboard=True)
 kb.add(KeyboardButton('/help')).insert(KeyboardButton('/photo')).add(KeyboardButton('/random')).insert(KeyboardButton('/description'))
+
+ikb = InlineKeyboardMarkup(row_width=2)
+ib1 = InlineKeyboardButton(text='Button 1',
+                           url=config.URL_youtube)
+ib2 = InlineKeyboardButton(text='Button 2',
+                           url=config.URL_youtube)
+
+ikb.add(ib1, ib2)
 
 HELP_COMMAND = """
 <b>/help</b> - <em>список команд</em>
@@ -46,6 +54,12 @@ async def send_random(message: types.Message):
     await bot.send_location(chat_id=message.chat.id,
                             latitude=randrange(1, 100),
                             longitude=randrange(1, 100))
+    
+@dp.message_handler(commands=['vote'])
+async def command_vote(message: types.Message):
+    await bot.send_message(chat_id=message.from_user.id,
+                           text='Hellow world!',
+                           reply_markup=ikb)
 
 @dp.message_handler()
 async def send_cat(message: types.Message):

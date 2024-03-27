@@ -1,89 +1,60 @@
-from aiogram import Bot, Dispatcher, _asyncio, types
-from aiogram.filters import Command
+from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
+from random import randrange
 
-import string, random
-
-import config, buttons
-#pytontelegram telethon pyrogram
-
-HELP_COMMAND = """
-<strong>help</strong> - <em>список команд</em>
-<strong>start</strong> - <em>начать работу с ботом</em>
-<strong>description</strong> - <em>описание бота</em>
-<strong>give</strong> - <em>возвращает стикер</em>
-<strong>картинка</strong> - <em>отправляет фотографию заставки доты</em>
-GAIZENBERG_TOKIOGHOU _DEANHNOTEN=intelCOREi5#gg
-"""
-
+import config
 
 bot = Bot(config.TOKEN_API)
-dp = Dispatcher()
+dp = Dispatcher(bot)
 
-async def on_startup():
-    print("Бот был успешно запущен!")
+kb = ReplyKeyboardMarkup(resize_keyboard=True)
+kb.add(KeyboardButton('/help')).insert(KeyboardButton('/photo')).add(KeyboardButton('/random')).insert(KeyboardButton('/description'))
 
-@dp.message(Command("help"))
-async def help_command(messege: types.Message):
-    await bot.send_message(chat_id=messege.from_user.id, 
-                           text=HELP_COMMAND, 
-                           parse_mode="HTML",
-                           reply_markup=buttons.keyboard_help())
-    await messege.delete()
+HELP_COMMAND = """
+<b>/help</b> - <em>список команд</em>
+<b>/start</b> - <em>старт бота</em>
+<b>/description</b> - <em>описание бота</em>
+<b>/photo</b> - <em>отправка нашего фото</em>"""
 
-@dp.message(Command("start"))
-async def start_command(messege: types.Message):
-    await messege.answer(text='<em>Добро пожаловать в наш телеграмм бот!</em>', 
-                         parse_mode="HTML",
-                         reply_markup=buttons.keyboard_start())
-    await messege.delete()
+async def on_startup(_):
+    print('Я запустился!')
 
-@dp.message(Command("description"))
-async def desc_command(messege: types.Message):
-    await messege.answer(text="Данный наверное что-то умеет, можешь проверить)")
-    await messege.delete()
+@dp.message_handler(commands=['start'])
+async def command_start(message: types.Message):
+    await bot.send_message(chat_id=message.chat.id,
+                           text='И снова сдрасте!',
+                           reply_markup=kb)
 
-@dp.message(Command("give"))
-async def give_sticker(messege:types.Message):
-    await messege.answer(text="Смотри какой смешной клоун " + "❤️")
-    await bot.send_sticker(messege.from_user.id, 
-                           sticker=config.STICKER_shadow_fiend)
-    await messege.delete()
+@dp.message_handler(commands=['help'])
+async def command_help(message: types.Message):
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=HELP_COMMAND,
+                           parse_mode='HTML')
 
-@dp.message(Command("картинка"))
-async def send_image(messege:types.Message):
-    await bot.send_photo(chat_id=messege.chat.id,
+@dp.message_handler(commands=['description'])
+async def command_desc(message: types.Message):
+    await bot.send_message(chat_id=message.from_user.id,
+                           text='Наш бот что-то умеет проверь это)')
+
+@dp.message_handler(commands=['photo'])
+async def send_orange(message: types.Message):
+    await bot.send_photo(chat_id=message.chat.id,
                          photo=config.PHOTO_dota2)
-    await messege.delete()
 
+@dp.message_handler(commands=['random'])
+async def send_random(message: types.Message):
+    await bot.send_location(chat_id=message.chat.id,
+                            latitude=randrange(1, 100),
+                            longitude=randrange(1, 100))
 
-@dp.message()
-async def bye(messege:types.Message):
-    global count
-    if messege.text in config.parting:
-        await bot.send_sticker(messege.from_user.id, 
+@dp.message_handler()
+async def send_cat(message: types.Message):
+    if message.text == '❤️':
+        await bot.send_sticker(chat_id=message.from_user.id,
+                               sticker=config.STICKER_HEART)
+    if message.text in config.parting:
+        await bot.send_sticker(chat_id=message.from_user.id,
                                sticker=config.STICKER_Before_the_connection)
-    if "❤️" in messege.text:
-        await messege.answer(text="🖤" * messege.text.count("❤️"))
-        count = messege.text.count("❤️")
-        await messege.answer(text=f"Количество сердешек = {count}")
 
-#@dp.message()
-#async def send_sticker_id(messege:types.Message):
-    #if messege.content_type == messege.sticker:
-        #await messege.answer(messege.sticker.file_id)
-
-#@dp.message()
-#async def check_count(messege: types.Message):
-    #await messege.reply('YES') if '0' in messege.text else await messege.reply('NO')
-
-#@dp.message()
-#async def send_random_letter(messege: types.Message):
-   #await messege.reply(random.choice(messege.text))
-
-
-async def main():
-    dp.startup.register(on_startup)
-    await dp.start_polling(bot)
-
-if __name__ == '__main__':
-    _asyncio.run(main())
+if __name__ == "__main__":
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)

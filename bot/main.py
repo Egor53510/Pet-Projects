@@ -1,22 +1,10 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton,  InlineKeyboardButton, InlineKeyboardMarkup
 from random import randrange
 
-import config
+import config, keyboards
 
 bot = Bot(config.TOKEN_API)
 dp = Dispatcher(bot)
-
-kb = ReplyKeyboardMarkup(resize_keyboard=True)
-kb.add(KeyboardButton('/help')).insert(KeyboardButton('/photo')).add(KeyboardButton('/random')).insert(KeyboardButton('/description'))
-
-ikb = InlineKeyboardMarkup(row_width=2)
-ib1 = InlineKeyboardButton(text='Button 1',
-                           url=config.URL_youtube)
-ib2 = InlineKeyboardButton(text='Button 2',
-                           url=config.URL_youtube)
-
-ikb.add(ib1, ib2)
 
 HELP_COMMAND = """
 <b>/help</b> - <em>список команд</em>
@@ -31,7 +19,7 @@ async def on_startup(_):
 async def command_start(message: types.Message):
     await bot.send_message(chat_id=message.chat.id,
                            text='И снова сдрасте!',
-                           reply_markup=kb)
+                           reply_markup=keyboards.kb)
 
 @dp.message_handler(commands=['help'])
 async def command_help(message: types.Message):
@@ -59,7 +47,7 @@ async def send_random(message: types.Message):
 async def command_vote(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id,
                            text='Hellow world!',
-                           reply_markup=ikb)
+                           reply_markup=keyboards.ikb)
 
 @dp.message_handler()
 async def send_cat(message: types.Message):

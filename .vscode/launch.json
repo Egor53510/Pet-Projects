@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "TodoList",
+            "request": "launch",
+            "mainClass": "TodoList",
+            "projectName": "Vs_code_1d80eda3"
+        },
+        {
+            "type": "java",
+            "name": "prz1",
+            "request": "launch",
+            "mainClass": "prz1",
+            "projectName": "Vs_code_1d80eda3"
+        },
+        {
+            "type": "java",
+            "name": "prz",
+            "request": "launch",
+            "mainClass": "prz",
+            "projectName": "Vs_code_1d80eda3"
+        },
+        {
+            "type": "java",
+            "name": "Test",
+            "request": "launch",
+            "mainClass": "Test",
+            "projectName": "Vs_code_1d80eda3"
+        },
+        {
+            "type": "java",
+            "name": "SumCalculator",
+            "request": "launch",
+            "mainClass": "SumCalculator",
+            "projectName": "Vs_code_1d80eda3"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Programm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "prz.cpp"
+        }
+    ]
+}

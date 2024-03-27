@@ -59,10 +59,10 @@ async def command_vote(message: types.Message):
                            reply_markup=ikb)
 @dp.callback_query_handler()
 async def callback_vote(callback: types.CallbackQuery):
-    
-    print('Нажата кнопка')
-    await callback.answer(text='Нравится', show_alert=True)
-    #await callback.answer(text='Не нравится', show_alert=True)
+    if callback.data == 'like':
+        print('Нажата кнопка')
+        await callback.answer(text='Нравится', show_alert=True)
+    await callback.answer(text='Не нравится', show_alert=True)
 
 
 @dp.message_handler()

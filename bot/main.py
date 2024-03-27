@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton,  InlineKeyboardButton, InlineKeyboardMarkup
 from random import randrange
 
 import config, keyboards
@@ -45,9 +46,24 @@ async def send_random(message: types.Message):
     
 @dp.message_handler(commands=['vote'])
 async def command_vote(message: types.Message):
-    await bot.send_message(chat_id=message.from_user.id,
-                           text='Hellow world!',
-                           reply_markup=keyboards.ikb)
+    ikb = InlineKeyboardMarkup(row_width=2)
+    ib1 = InlineKeyboardButton(text='❤️',
+                           callback_data="like")
+    ib2 = InlineKeyboardButton(text='🖤',
+                           callback_data="dislike")
+    ikb.add(ib1, ib2)
+
+    await bot.send_photo(chat_id=message.from_user.id,
+                           photo=config.PHOTO_dota2,
+                           caption="Нравится ли тебе эта игра?",
+                           reply_markup=ikb)
+@dp.callback_query_handler()
+async def callback_vote(callback: types.CallbackQuery):
+    
+    print('Нажата кнопка')
+    await callback.answer(text='Нравится', show_alert=True)
+    #await callback.answer(text='Не нравится', show_alert=True)
+
 
 @dp.message_handler()
 async def send_cat(message: types.Message):

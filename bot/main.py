@@ -2,10 +2,16 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton,  InlineKeyboardButton, InlineKeyboardMarkup
 from random import randrange
 
+from aiogram.contrib.middlewares.logging import LoggingMiddleware
+import logging
+
 import config, keyboards
+
+logging.basicConfig(level=logging.INFO)
 
 bot = Bot(config.TOKEN_API)
 dp = Dispatcher(bot)
+dp.middleware.setup(LoggingMiddleware())
 
 HELP_COMMAND = """
 <b>/help</b> - <em>список команд</em>
@@ -46,23 +52,16 @@ async def send_random(message: types.Message):
     
 @dp.message_handler(commands=['vote'])
 async def command_vote(message: types.Message):
-    ikb = InlineKeyboardMarkup(row_width=2)
-    ib1 = InlineKeyboardButton(text='❤️',
-                           callback_data="like")
-    ib2 = InlineKeyboardButton(text='🖤',
-                           callback_data="dislike")
-    ikb.add(ib1, ib2)
-
     await bot.send_photo(chat_id=message.from_user.id,
                            photo=config.PHOTO_dota2,
                            caption="Нравится ли тебе эта игра?",
-                           reply_markup=ikb)
-@dp.callback_query_handler()
+                           reply_markup=keyboards.ikb)
+    
+@dp.callback_query_handler(lambda query: query.data in ["like", "dislike"])
 async def callback_vote(callback: types.CallbackQuery):
     if callback.data == 'like':
-        print('Нажата кнопка')
-        await callback.answer(text='Нравится', show_alert=True)
-    await callback.answer(text='Не нравится', show_alert=True)
+        await bot.answer_callback_query(callback.id, text='Нравится')
+    await bot.answer_callback_query(callback.id, text='Не нравится')
 
 
 @dp.message_handler()

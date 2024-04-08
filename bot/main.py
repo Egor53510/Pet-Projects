@@ -1,6 +1,7 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton,  InlineKeyboardButton, InlineKeyboardMarkup
 from random import randrange
+import wikipedia
 
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 import logging
@@ -17,7 +18,8 @@ HELP_COMMAND = """
 <b>/help</b> - <em>список команд</em>
 <b>/start</b> - <em>старт бота</em>
 <b>/description</b> - <em>описание бота</em>
-<b>/photo</b> - <em>отправка нашего фото</em>"""
+<b>/photo</b> - <em>отправка нашего фото</em>
+<b>/wiki</b> - <em>поиск статей по википедии</em>"""
 
 async def on_startup(_):
     print('Я запустился!')
@@ -63,6 +65,28 @@ async def callback_vote(callback: types.CallbackQuery):
         await bot.answer_callback_query(callback.id, text='Нравится')
     await bot.answer_callback_query(callback.id, text='Не нравится')
 
+dialogs = {}
+
+@dp.message_handler(commands=["wiki"])
+async def command_wiki(message: types.Message):
+    await message.reply("Введите ваш запрос")
+
+    dialogs[message.chat.id] = "waiting_for_query"
+
+@dp.message_handler(lambda message: message.chat.id in dialogs and dialogs[message.chat.id] == "waiting_for_query")
+async def proccess_wiki_query(message:types.Message):
+    query = message.text
+
+    wikipedia.set_lang("ru")
+    search_results = wikipedia.search(query)
+    if search_results:
+        # Берем первый результат и получаем статью
+        page = wikipedia.page(search_results[0])
+        await message.reply(page.summary)
+    else:
+        await message.reply("По вашему запросу ничего не найдено.")
+
+    del dialogs[message.chat.id]
 
 @dp.message_handler()
 async def send_cat(message: types.Message):

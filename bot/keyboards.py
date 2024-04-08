@@ -5,6 +5,7 @@ import config
 
 kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 kb.add(KeyboardButton('/help')).insert(KeyboardButton('/photo')).add(KeyboardButton('/random')).insert(KeyboardButton('/description'))
+kb.add(KeyboardButton('/wiki'))
 
 ikb = InlineKeyboardMarkup(row_width=2)
 ib1 = InlineKeyboardButton(text='❤️',

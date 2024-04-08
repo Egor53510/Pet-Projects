@@ -80,7 +80,6 @@ async def proccess_wiki_query(message:types.Message):
     wikipedia.set_lang("ru")
     search_results = wikipedia.search(query)
     if search_results:
-        # Берем первый результат и получаем статью
         page = wikipedia.page(search_results[0])
         await message.reply(page.summary)
     else:

@@ -46,13 +46,18 @@ def rgb(r, g, b):
 def cakes(recipe, available):
     kol = []
     for key in recipe:
-        i = 0
-        print(key)
-        while recipe[key] > available[key]:
-            i += 1
-        kol.append(i)
+        if key in available:
+            i = 0
+            har = recipe[key]
+            while recipe[key] <= available[key]:
+                i += 1
+                recipe[key] += har
+            kol.append(i)
+        else:
+            return 0
     return min(kol)
 
-recipe = {"flour": 500, "sugar": 200, "eggs": 1}
-available = {"flour": 1200, "sugar": 1200, "eggs": 5, "milk": 200}
+def alphanumeric(password):
+    pass
+
 print(cakes(recipe, available))

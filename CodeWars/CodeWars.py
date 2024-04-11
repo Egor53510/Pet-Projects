@@ -58,6 +58,6 @@ def cakes(recipe, available):
     return min(kol)
 
 def alphanumeric(password):
-    pass
+    return password.isalnum()
 
-print(cakes(recipe, available))
+print(alphanumeric("hello world_"))

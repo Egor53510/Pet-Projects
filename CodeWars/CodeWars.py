@@ -41,5 +41,18 @@ def spin_words(sentence):
     return ' '.join([word[::-1] if len(word) >= 5 else word for word in sentence.split(" ")])
 
 def rgb(r, g, b):
-    return " ".join([str(hex(r).upper()[2:]), str(hex(g).upper()[2:]), str(hex(b).upper()[2:])])
-print(rgb(1, 2, 3))
+    return "".join([str(hex(max(0, min(255, r))).upper()[2:].zfill(2)), str(hex(max(0, min(255, g))).upper().zfill(2)[2:].zfill(2)), str(hex(max(0, min(255, b))).upper().zfill(2)[2:].zfill(2))])
+
+def cakes(recipe, available):
+    kol = []
+    for key in recipe:
+        i = 0
+        print(key)
+        while recipe[key] > available[key]:
+            i += 1
+        kol.append(i)
+    return min(kol)
+
+recipe = {"flour": 500, "sugar": 200, "eggs": 1}
+available = {"flour": 1200, "sugar": 1200, "eggs": 5, "milk": 200}
+print(cakes(recipe, available))

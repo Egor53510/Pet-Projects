@@ -1,10 +1,10 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton,  InlineKeyboardButton, InlineKeyboardMarkup
 from random import randrange
-import wikipedia, easyocr
+import wikipedia
 from PIL import Image
-import os
 
+import os
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 import logging
 
@@ -80,28 +80,10 @@ async def proccess_wiki_query(message:types.Message):
 
     del dialogs[message.chat.id]
 
-#     текст с картинки
-reader = easyocr.Reader(['ru']) 
+#     текст с картинки 
 @dp.message_handler(commands=['text'])
 async def handle_text_command(message: types.Message):
-    photo = message.photo[-1]
-    file_id = photo.file_id
-
-    file = await bot.get_file(file_id)
-    file_path = file.file_path
-
-    downloaded_file = await bot.download_file(file_path)
-
-    with open('image.jpg', 'wb') as new_file:
-        new_file.write(downloaded_file.read())
-
-    result = reader.readtext('image.jpg')
-
-    text = '\n'.join([bbox[1] for bbox in result])
-
-    os.remove('image.jpg')
-
-    await message.answer(text)
+    await message.reply(message.caption)
 
 #     голосование картинки    
 @dp.message_handler(commands=['vote'])

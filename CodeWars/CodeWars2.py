@@ -21,5 +21,11 @@ def parse_int(string):
             numbers = [x * 1000000 for x in numbers]
     return sum(numbers)
 
+def make_readable(seconds):
+    hours  = seconds // 3600
+    minuts = (seconds % 3600) // 60
+    seconds = seconds % 60
+    return f"{str(hours).zfill(2)}:{str(minuts).zfill(2)}:{str(seconds).zfill(2)}"
 
-print(parse_int("seven hundred thousand"))
+
+print(make_readable(359999))

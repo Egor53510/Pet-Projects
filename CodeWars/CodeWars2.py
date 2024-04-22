@@ -80,7 +80,18 @@ def bowling_score(frames):
     return score
 
 #--------------------------------------------------------------------------------------------------------------
+def strip_comments(strng, markers):
+    lst = strng.splitlines()
+    otvet = []
+    for elem in lst:
+        o = elem.split()
+        for el in o:
+            if el not in markers and el[0] not in markers:
+                otvet.append(el)
+            else:
+                break
+    return ''.join(otvet)
+            
 
 
-
-print(bowling_score('8/ 20 4/ 22 20 01 X 9/ 0/ 12'))
+print(strip_comments('apples, pears # and bananas\ngrapes\nbananas !apples', ['#', '!']))

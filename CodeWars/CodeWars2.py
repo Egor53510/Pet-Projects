@@ -80,18 +80,23 @@ def bowling_score(frames):
     return score
 
 #--------------------------------------------------------------------------------------------------------------
-def strip_comments(strng, markers):
-    lst = strng.splitlines()
-    otvet = []
-    for elem in lst:
-        o = elem.split()
-        for el in o:
-            if el not in markers and el[0] not in markers:
-                otvet.append(el)
-            else:
+def strip_comments(text, comment_markers):
+    modified_text = ""
+    for line in text.splitlines():
+        found_comment = False
+        new_line = ""
+        for char in line:
+            if char in comment_markers:
+                found_comment = True
                 break
-    return ''.join(otvet)
+            if not found_comment:
+                new_line += char
+        if new_line.strip():  # Add only non-empty lines
+            modified_text += new_line + "\n"
+
+    # Remove trailing whitespace
+    modified_text = modified_text.rstrip()
+
+    return modified_text
             
-
-
 print(strip_comments('apples, pears # and bananas\ngrapes\nbananas !apples', ['#', '!']))

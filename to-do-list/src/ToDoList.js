@@ -3,7 +3,7 @@ import ToDoItem from './ToDoItem';
 
 function ToDoList({ tasks, onChangeTask, onDeleteTask }) {
     return (
-        <ul>
+        <ul className="task-list">
             {tasks.map((task, index) => (
                 <ToDoItem
                     key={index}

@@ -1,25 +1,107 @@
-.App {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  color:  black;
-  padding-top: 4rem;
+* {
+  box-sizing: border-box;
 }
 
-.todo_wrapper{
-  margin-right: 7rem;
-  font-size: 1rem;
-  color: #585858;
+ul {
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
-.todo_item{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  /* Выравниваем элементы по вертикали */
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
 }
 
-.todo_item > button{
-  margin: 0 5px;
+li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+li:hover {
+  background: #ddd;
+}
+
+li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+li.checked::before {
+  content: '✓';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+.close {
+  margin-left: 10px; /* Добавляем отступ слева */
+  padding: 12px 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.close:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+.header {
+  background-color: #f44336;
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.header input {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+  margin-left: 10px; /* Добавим отступ слева */
+}
+
+.addBtn:hover {
+  background-color: #bbb;
 }

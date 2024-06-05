@@ -2,16 +2,16 @@ import React from "react";
 
 function ToDoItem({ task, onChange, onDelete }) {
     return(
-        <li>
+        <li className={task.completed ? "checked" : ""}>
             <span
                 style={{
-                    textDecoration: task.completed ? 'line-through': 'none'
+                    textDecoration: task.completed ? 'line-through' : 'none'
                 }}
                 onClick={onChange}
             >
                 {task.text}
             </span>
-            <button onClick={onDelete}>Delete</button>
+            <button className="close" onClick={onDelete}>X</button>
         </li>
     )
 }

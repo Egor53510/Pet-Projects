@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import ToDoList from './ToDoList';
 
@@ -6,9 +6,18 @@ function App() {
   const [task, setTask] = useState('');
   const [tasks, setTasks] = useState([]);
 
+  useEffect(() => {
+    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (savedTasks){
+      setTasks(savedTasks);
+    }
+  }, []);
+
   const onAddTask = () => {
     if (task.trim()) {
-      setTasks([...tasks, { text: task, completed: false }]);
+      const newTasks = [...tasks, { text: task, completed: false }];
+      setTasks(newTasks);
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
       setTask('');
     }
   };
@@ -18,23 +27,15 @@ function App() {
       i === index ? { ...task, completed: !task.completed } : task
     );
     setTasks(newTasks);
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
   };
 
   const onDeleteTask = (index) => {
     const newTasks = tasks.filter((_, i) => i !== index);
     setTasks(newTasks);
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
   };
 
-  const onSaveTasks = () => {
-    const data = tasks.map(task => `${task.completed ? '[x]' : '[ ]'} ${task.text}`).join('\n');
-    const blob = new Blob([data], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'tasks.txt';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <div>
@@ -50,6 +51,9 @@ function App() {
           <button className="addBtn" onClick={onAddTask}>
             Add Item
           </button>
+          <button className="addBtn" onClick={() => localStorage.setItem('tasks', JSON.stringify(tasks))}>
+          Save Tasks
+        </button>
         </div>
       </div>
       <ToDoList tasks={tasks} onChangeTask={onChangeTask} onDeleteTask={onDeleteTask} />

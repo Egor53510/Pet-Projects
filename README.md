@@ -1,4 +1,5 @@
 ## My pet projects
 
-to-do-list: React project\n
+to-do-list: React project
+
 bot: aiogram bot

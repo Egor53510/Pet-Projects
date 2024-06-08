@@ -163,6 +163,4 @@ cython_debug/
 data.csv
 need.txt
 prz.php
-IntLinkedList.java
-IntList.java
-Main.java
+

@@ -1,14 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700&display=swap');
+
 * {
     margin: 0px;
     padding: 0px;
 }
 
 body{
-    background-color: bisque;
+    background-color: gray;
+    font-family: "Merriweather", serif;
+    font-weight: 300;
 }
 
 .header{
-    background-color: black;
+    background-color: #222;
     color: white;
+    padding: 20px 100px;
+    font-weight: 600;
+}
+
+main{
+    margin: 50px 100px;
+    width: 50%;
+    float: left;
+}
+
+aside{
+    width: 20%;
+    margin-top: 50px;
+    margin-left: 5%;
+    float: left;
+}
+
+main .user{
+    margin-bottom: 50px;
+    background-color: #3e8fa0;
     padding: 20px;
 }
+
+main .delete{
+    float: right;
+    cursor: pointer;
+    transform: scale(2);
+}
+
+main .edit {
+    float: right;
+    margin-right: 25px;
+    cursor: pointer;
+    transform: scale(2);
+}
+
+main .delete:hover,
+main .edit:hover {
+    opacity: 0.5;
+}
+
+aside form input:not([type="checkbox"]), 
+aside form button {
+    width: 90%;
+    padding: 15px 5%;
+    font-family: "Merriweather", serif;
+    font-weight: 300;
+    margin-bottom: 10px;
+    border: 0;
+    background-color: #222;
+    color: #fff;
+    outline: none;
+    font-size: 15px;
+}
+
+aside form input [type="checkbox"] {
+    margin: 10px;
+}
+
+aside form button {
+    width: 100%;
+    cursor: pointer;
+    transition: transform 500ms ease;
+}
+
+aside form button:hover {
+    transform: scale(1.1);
+}
+
